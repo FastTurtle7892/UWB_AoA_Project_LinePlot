@@ -28,10 +28,10 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: RobotPalWeb
+          #name: RobotPalWeb
           path: . 
           run-id: ${{ github.event.workflow_run.id }}
-          
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
