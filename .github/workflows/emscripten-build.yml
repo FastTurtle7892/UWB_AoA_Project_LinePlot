@@ -18,27 +18,22 @@ jobs:
 
       - name: Verify
         run: emcc -v
-      
-      # Option 2: specify 'latest' or 'latestrc' in the input version arguments:
+
       - name: Get latest CMake
         uses: lukka/get-cmake@latest
         with:
-          cmakeVersion: latest      # <--= optional, use the latest release candidate (notice the 'rc' suffix).
-          #ninjaVersion: latest        # <--= optional, use the latest release (non candidate).
-      
-      # 3. 레포지토리 코드 체크아웃
-      - name: Checkout code
-        uses: actions/checkout@v4 # v4로 버전 업데이트
+          cmakeVersion: latest
 
-      # 4. CMake 빌드 디렉토리 생성 및 emcmake로 설정
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+
       - name: Configure CMake
         run: |
           mkdir build
           cd build
-          # emcmake를 사용하여 CMake 실행 (CMakeLists.txt가 루트에 있다고 가정)
           emcmake cmake ..
 
-      # 5. Make를 사용하여 프로젝트 빌드
       - name: Build project
         run: |
           cd build
