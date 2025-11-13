@@ -45,8 +45,12 @@ jobs:
           emmake make
 
       - name: Upload GitHub Pages artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4 
         with:
-          name: github-pages
-          path: build # Emscripten 빌드 결과물이 있는 폴더
+          name: RobotPalWeb
+          working-directory: build/RobotPal
+          path: |
+            ./RobotPal.html
+            ./RobotPal.js
+            ./RobotPal.wasm
           retention-days: 1
