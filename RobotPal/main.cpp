@@ -18,15 +18,19 @@
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #include <functional>
-static std::function<void()>            MainLoopForEmscriptenP;
-static void MainLoopForEmscripten()     { MainLoopForEmscriptenP(); }
-#define EMSCRIPTEN_MAINLOOP_BEGIN       MainLoopForEmscriptenP = [&]() { do
-#define EMSCRIPTEN_MAINLOOP_END         while (0); }; emscripten_set_main_loop(MainLoopForEmscripten, 0, true)
+static std::function<void()> MainLoopForEmscriptenP;
+static void MainLoopForEmscripten() { MainLoopForEmscriptenP(); }
+#define EMSCRIPTEN_MAINLOOP_BEGIN MainLoopForEmscriptenP = [&]() { do
+#define EMSCRIPTEN_MAINLOOP_END \
+    while (0)                   \
+        ;                       \
+    }                           \
+    ;                           \
+    emscripten_set_main_loop(MainLoopForEmscripten, 0, true)
 #else
 #define EMSCRIPTEN_MAINLOOP_BEGIN
 #define EMSCRIPTEN_MAINLOOP_END
 #endif
-
 
 std::string csv =
     R"(
@@ -211,26 +215,12 @@ bool LoadDataFromCSV(const char *file_name, std::vector<float> &out_x, std::vect
         // X 값 읽기
         if (!std::getline(ss, value, ','))
             continue;
-        try
-        {
-            x = std::stof(value);
-        }
-        catch (...)
-        {
-            continue;
-        }
+        x = std::stof(value);
 
         // Y 값 읽기
         if (!std::getline(ss, value, ','))
             continue;
-        try
-        {
-            y = std::stof(value);
-        }
-        catch (...)
-        {
-            continue;
-        }
+        y = std::stof(value);
 
         out_x.push_back(x);
         out_y.push_back(y);
